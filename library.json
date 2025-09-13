@@ -1,10 +1,17 @@
 {
   "name": "KiraFlux-TUI",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Text User Interface for embedded C++",
   "keywords": [
     "ui",
     "gui",
+    "Text",
+    "Interface",
+    "User",
+    "UI",
+    "GUI",
+    "widgets",
+    "pages",
     "tui",
     "embedded"
   ],
