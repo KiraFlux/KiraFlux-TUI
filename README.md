@@ -260,18 +260,18 @@ enum class Event {
 
 **1. Простой интерфейс с кнопкой:**
 ```cpp
-kftui::Page main_page("Main");
-kftui::Button btn("Action", [](kftui::Button&) {
+kf::Page main_page("Main");
+kf::Button btn("Action", [](kf::Button&) {
     // Обработчик клика
 });
 
 void setup() {
     main_page.add(btn);
-    kftui::PageManager::instance().bind(main_page);
+    kf::PageManager::instance().bind(main_page);
 }
 
 void loop() {
-    auto& manager = kftui::PageManager::instance();
+    auto& manager = kf::PageManager::instance();
     if (manager.pollEvents()) {
         // Обновить дисплей
         auto output = manager.render();
@@ -282,28 +282,28 @@ void loop() {
 
 **2. Интерфейс с несколькими страницами:**
 ```cpp
-kftui::Page main("Main");
-kftui::Page settings("Settings");
+kf::Page main("Main");
+kf::Page settings("Settings");
 
-kftui::PageSetterButton to_settings(settings);
-kftui::PageSetterButton to_main(main);
+kf::PageSetterButton to_settings(settings);
+kf::PageSetterButton to_main(main);
 
 void setup() {
     main.add(to_settings);
     settings.add(to_main);
     main.link(settings); // Двусторонняя связь
     
-    kftui::PageManager::instance().bind(main);
+    kf::PageManager::instance().bind(main);
 }
 ```
 
 **3. Элементы управления с метками:**
 ```cpp
 int value = 0;
-kftui::SpinBox<int> spinner(value, 1);
-kftui::Labeled labeled_spinner("Value", spinner);
+kf::SpinBox<int> spinner(value, 1);
+kf::Labeled labeled_spinner("Value", spinner);
 
-kftui::Page page("Controls");
+kf::Page page("Controls");
 page.add(labeled_spinner);
 ```
 
@@ -334,8 +334,8 @@ page.add(labeled_spinner);
 
 ```cpp
 // Экономное использование памяти
-static kftui::Button btn("Test");
-static kftui::Page page("Main");
+static kf::Button btn("Test");
+static kf::Page page("Main");
 ```
 
 Лицензия: MIT ([LICENSE](./LICENSE))

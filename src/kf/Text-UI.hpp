@@ -9,7 +9,7 @@
 #include <functional>
 
 /// Text User Interface
-namespace kftui {
+namespace kf {
 
 enum class Event {
 
