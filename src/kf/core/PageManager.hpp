@@ -8,7 +8,7 @@
 
 namespace kf {
 
-struct PageManager final {
+struct PageManager {
 
 private:
     std::queue<Event> events{};
@@ -41,9 +41,7 @@ public:
         static constexpr char null_page_content[] = "null page";
         static constexpr TextStream::Slice null_page_slice{null_page_content, sizeof(null_page_content)};
 
-        if (active_page == nullptr) {
-            return null_page_slice;
-        }
+        if (active_page == nullptr) { return null_page_slice; }
 
         stream.reset();
         active_page->render(stream, rows);
