@@ -4,15 +4,15 @@
 #include <utility>
 #include <vector>
 
+#include <kf/abc/Widget.hpp>
 #include <kf/core/Event.hpp>
 #include <kf/core/TextStream.hpp>
-#include <kf/abc/Widget.hpp>
 
-namespace kf {
+namespace kf::tui {
 
 struct Page;
 
-struct PageSetterButton final : Widget {
+struct PageSetterButton final : kf::tui::Widget {
     Page &target;
 
     explicit PageSetterButton(Page &target) :
@@ -90,9 +90,8 @@ private:
         cursor = std::min(cursor, cursorPositionMax());
     }
 
-    inline int totalWidgets() const { return static_cast<int>(widgets.size()); }
+    [[nodiscard]] inline int totalWidgets() const { return static_cast<int>(widgets.size()); }
 
-    inline int cursorPositionMax() const { return totalWidgets() - 1; }
+    [[nodiscard]] inline int cursorPositionMax() const { return totalWidgets() - 1; }
 };
-
-}// namespace kf
+}// namespace kf::tui

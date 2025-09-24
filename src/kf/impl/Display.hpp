@@ -1,8 +1,10 @@
 #pragma once
 
-namespace kf {
+#include <kf/abc/Widget.hpp>
 
-template<typename T> struct Display final : Widget {
+namespace kf::tui {
+
+template<typename T> struct Display final : kf::tui::Widget {
     const T &value;
 
     explicit Display(const T &val) :
@@ -13,4 +15,4 @@ template<typename T> struct Display final : Widget {
     void doRender(TextStream &stream) const override { stream.print(value); }
 };
 
-}// namespace kf
+}// namespace kf::tui

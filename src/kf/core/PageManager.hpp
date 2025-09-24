@@ -2,11 +2,12 @@
 
 #include <queue>
 
+#include "TextStream.hpp"
 #include <kf/core/Event.hpp>
 #include <kf/core/Page.hpp>
 #include <kf/core/TextStream.hpp>
 
-namespace kf {
+namespace kf::tui {
 
 struct PageManager {
 
@@ -64,4 +65,4 @@ public:
     }
 };
 
-}// namespace kf
+}// namespace kf::tui

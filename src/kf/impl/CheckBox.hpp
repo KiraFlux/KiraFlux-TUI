@@ -4,9 +4,9 @@
 
 #include "kf/abc/Widget.hpp"
 
-namespace kf {
+namespace kf::tui {
 
-struct CheckBox final : kf::Widget {
+struct CheckBox final : kf::tui::Widget {
 
     using Handler = std::function<void(bool)>;
 
@@ -18,18 +18,18 @@ public:
     explicit CheckBox(Handler change_handler, bool default_state = false) :
         on_change{std::move(change_handler)}, state{default_state} {}
 
-    bool onEvent(kf::Event event) override {
-        if (event == kf::Event::Click) {
+    bool onEvent(Event event) override {
+        if (event == Event::Click) {
             setState(not state);
             return true;
         }
 
-        if (event == kf::Event::ChangeDecrement) {
+        if (event == Event::ChangeDecrement) {
             setState(false);
             return true;
         }
 
-        if (event == kf::Event::ChangeIncrement) {
+        if (event == Event::ChangeIncrement) {
             setState(true);
             return true;
         }
@@ -37,7 +37,7 @@ public:
         return false;
     }
 
-    void doRender(kf::TextStream &stream) const override {
+    void doRender(TextStream &stream) const override {
         stream.print(getLabel());
     }
 
@@ -50,4 +50,4 @@ private:
     }
 };
 
-}// namespace kf
+}// namespace kf::tui

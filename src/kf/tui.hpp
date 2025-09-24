@@ -1,7 +1,7 @@
 #pragma once
 
 /// Text User Interface
-namespace kf {}// namespace kf
+namespace kf::tui {}// namespace kf::tui
 
 // Core
 #include <kf/core/Event.hpp>

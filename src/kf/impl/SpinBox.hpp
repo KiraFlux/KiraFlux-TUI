@@ -1,10 +1,11 @@
 #pragma once
 
 #include <kf/abc/Widget.hpp>
+#include <type_traits>
 
-namespace kf {
+namespace kf::tui {
 
-template<typename T> struct SpinBox final : Widget {
+template<typename T> struct SpinBox final : kf::tui::Widget {
     static_assert(std::is_arithmetic<T>::value, "T must be arithmetic");
 
     using Scalar = T;
@@ -59,4 +60,4 @@ template<typename T> struct SpinBox final : Widget {
     }
 };
 
-}// namespace kf
+}// namespace kf::tui

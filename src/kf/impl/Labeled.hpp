@@ -2,10 +2,10 @@
 
 #include <kf/abc/Widget.hpp>
 
-namespace kf {
+namespace kf::tui {
 
-template<typename W> struct Labeled final : Widget {
-    static_assert((std::is_base_of<Widget, W>::value), "W must be a Widget Subclass");
+template<typename W> struct Labeled final : kf::tui::Widget {
+    static_assert(std::is_base_of<Widget, W>::value, "W must be a Widget Subclass");
 
     using Content = W;
 
@@ -27,4 +27,4 @@ template<typename W> struct Labeled final : Widget {
     }
 };
 
-}// namespace kf
+}// namespace kf::tui

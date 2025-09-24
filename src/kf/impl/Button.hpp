@@ -4,9 +4,9 @@
 
 #include <kf/abc/Widget.hpp>
 
-namespace kf {
+namespace kf::tui {
 
-struct Button final : Widget {
+struct Button final : kf::tui::Widget {
 
     using ClickHandler = std::function<void(Button &)>;
 
@@ -30,4 +30,4 @@ struct Button final : Widget {
     }
 };
 
-}// namespace kf
+}// namespace kf::tui

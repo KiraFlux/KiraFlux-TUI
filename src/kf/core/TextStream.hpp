@@ -3,7 +3,7 @@
 #include <Print.h>
 #include <array>
 
-namespace kf {
+namespace kf::tui {
 
 struct TextStream final : Print {
     static constexpr size_t buffer_size = 128;
@@ -39,4 +39,4 @@ public:
     }
 };
 
-}// namespace kf
+}// namespace kf::tui

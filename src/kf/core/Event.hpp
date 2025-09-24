@@ -1,6 +1,6 @@
 #pragma once
 
-namespace kf {
+namespace kf::tui {
 
 enum class Event {
 
@@ -26,4 +26,4 @@ enum class Event {
     ChangeDecrement,
 };
 
-}// namespace kf
+}

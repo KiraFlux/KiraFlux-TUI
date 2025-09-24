@@ -1,14 +1,16 @@
+#include "Event.hpp"
+#include "PageManager.hpp"
 #include <kf/core/Page.hpp>
 #include <kf/core/PageManager.hpp>
 
-void kf::PageSetterButton::doRender(TextStream &stream) const {
+void kf::tui::PageSetterButton::doRender(TextStream &stream) const {
     stream.write('>');
     stream.write(' ');
     stream.print(target.title);
 }
 
-bool kf::PageSetterButton::onEvent(Event event) {
-    if (event != Event::Click) { return false; }
-    kf::PageManager::instance().bind(target);
+bool kf::tui::PageSetterButton::onEvent(tui::Event event) {
+    if (event != tui::Event::Click) { return false; }
+    PageManager::instance().bind(target);
     return true;
 }

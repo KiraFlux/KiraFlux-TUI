@@ -4,9 +4,9 @@
 
 #include "kf/abc/Widget.hpp"
 
-namespace kf {
+namespace kf::tui {
 
-template<typename T, size_t N> struct ComboBox final : Widget {
+template<typename T, size_t N> struct ComboBox final : kf::tui::Widget {
     static_assert(N >= 1, "N >= 1");
 
 public:
@@ -26,13 +26,13 @@ public:
     explicit ComboBox(Container items, T &val) :
         items{std::move(items)}, value{val} {}
 
-    bool onEvent(kf::Event event) override {
-        if (event == kf::Event::ChangeDecrement) {
+    bool onEvent(Event event) override {
+        if (event == Event::ChangeDecrement) {
             moveCursor(-1);
             value = items[cursor].value;
             return true;
         }
-        if (event == kf::Event::ChangeIncrement) {
+        if (event == Event::ChangeIncrement) {
             moveCursor(+1);
             value = items[cursor].value;
             return true;
@@ -40,7 +40,7 @@ public:
         return false;
     }
 
-    void doRender(kf::TextStream &stream) const override {
+    void doRender(TextStream &stream) const override {
         stream.write('<');
         stream.print(items[cursor].key);
         stream.write('>');
@@ -54,4 +54,4 @@ private:
     }
 };
 
-}// namespace kf
+}// namespace kf::tui
