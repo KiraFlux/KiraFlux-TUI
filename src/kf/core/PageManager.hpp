@@ -9,7 +9,7 @@
 
 namespace kf::tui {
 
-struct PageManager {
+struct PageManager final {
 
 private:
     std::queue<Event> events{};
