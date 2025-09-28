@@ -21,7 +21,7 @@ template<typename W> struct Labeled final : kf::tui::Widget {
 
     void doRender(TextStream &stream) const override {
         stream.print(label);
-        stream.write('\t');
+        stream.write(' ');
         stream.write(':');
         content.doRender(stream);
     }
