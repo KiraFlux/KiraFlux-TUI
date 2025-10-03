@@ -4,13 +4,14 @@
 
 namespace kf::tui {
 
+/// @brief Отображает значение
 template<typename T> struct Display final : kf::tui::Widget {
+
+    /// @brief Отображаемое значение
     const T &value;
 
     explicit Display(const T &val) :
         value{val} {}
-
-    bool onEvent(Event event) override { return false; }
 
     void doRender(TextStream &stream) const override { stream.print(value); }
 };

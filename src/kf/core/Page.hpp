@@ -18,7 +18,7 @@ struct PageSetterButton final : kf::tui::Widget {
     explicit PageSetterButton(Page &target) :
         target{target} {}
 
-    bool onEvent(Event event) override;
+    bool onClick() override;
 
     void doRender(TextStream &stream) const override;
 };
