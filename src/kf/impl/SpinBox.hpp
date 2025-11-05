@@ -5,7 +5,7 @@
 
 namespace kf::tui {
 
-/// @brief Спин-бокс - Виджет для изменения арифметического значенмия в указанном режиме
+/// @brief Спин-бокс - Виджет для изменения арифметического значения в указанном режиме
 template<typename T> struct SpinBox final : kf::tui::Widget {
     static_assert(std::is_arithmetic<T>::value, "T must be arithmetic");
 
@@ -27,6 +27,7 @@ template<typename T> struct SpinBox final : kf::tui::Widget {
 private:
     /// @brief
     bool is_step_setting_mode{false};
+
     /// @brief Режим изменения значения
     const Mode mode;
 
@@ -39,7 +40,7 @@ private:
 public:
     explicit SpinBox(
         T &value,
-        T step = static_cast<T>(1.0f),
+        T step = static_cast<T>(1),
         Mode mode = Mode::Arithmetic) :
         mode{mode}, value{value}, step{step} {}
 
