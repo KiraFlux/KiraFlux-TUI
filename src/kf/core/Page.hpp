@@ -6,7 +6,8 @@
 
 #include <kf/abc/Widget.hpp>
 #include <kf/core/Event.hpp>
-#include <kf/core/TextStream.hpp>
+#include <kf/core/BufferStream.hpp>
+
 
 namespace kf::tui {
 
@@ -20,7 +21,7 @@ struct PageSetterButton final : kf::tui::Widget {
 
     bool onClick() override;
 
-    void doRender(TextStream &stream) const override;
+    void doRender(BufferStream &stream) const override;
 };
 
 struct Page {
@@ -33,7 +34,7 @@ private:
     PageSetterButton to_this{*this};
 
 public:
-    explicit Page(const char *title) noexcept :
+    explicit Page(const char *title) noexcept:
         title{title} {}
 
     void add(Widget &widget) { widgets.push_back(&widget); }
@@ -43,7 +44,7 @@ public:
         other.add(this->to_this);
     }
 
-    void render(TextStream &stream, int rows) {
+    void render(BufferStream &stream, int rows) {
         stream.print(title);
         stream.write('\n');
 
@@ -60,31 +61,26 @@ public:
 
     bool onEvent(Event event) {
         switch (event) {
-            case Event::None:
-                return false;
-
-            case Event::Update:
+            case Event::None: { return false; }
+            case Event::Update: { return true; }
+            case Event::ElementNext: {
+                moveCursor(+1);
                 return true;
-
-            case Event::ElementNext:
-                cursorMove(+1);
+            }
+            case Event::ElementPrevious: {
+                moveCursor(-1);
                 return true;
-
-            case Event::ElementPrevious:
-                cursorMove(-1);
-                return true;
-
-            case Event::Click:
-            case Event::ChangeIncrement:
-            case Event::ChangeDecrement:
-                return widgets[cursor]->onEvent(event);
+            }
+            case Event::Click: { return widgets[cursor]->onClick(); }
+            case Event::ChangeIncrement: { return widgets[cursor]->onChange(+1); }
+            case Event::ChangeDecrement: { return widgets[cursor]->onChange(-1); }
         }
 
         return false;
     }
 
 private:
-    void cursorMove(int delta) {
+    void moveCursor(int delta) {
         cursor += delta;
         cursor = std::max(cursor, 0);
         cursor = std::min(cursor, cursorPositionMax());

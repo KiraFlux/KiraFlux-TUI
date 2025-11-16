@@ -1,24 +1,21 @@
 #pragma once
 
 #include <Print.h>
+#include <kf/aliases.hpp>
 #include <array>
+
 
 namespace kf::tui {
 
-struct TextStream final : Print {
-    static constexpr size_t buffer_size = 128;
+struct BufferStream final : Print {
 
 private:
-    std::array<char, buffer_size> buffer{};
-    size_t cursor{0};
+    std::array<char, 128> buffer{};
+    usize cursor{0};
 
 public:
-    struct Slice {
-        const char *data;
-        const size_t len;
-    };
 
-    Slice prepareData() {
+    slice<const char> prepareData() {
         buffer[cursor] = '\0';
 
         return {
@@ -27,14 +24,17 @@ public:
         };
     }
 
-    void reset() { cursor = 0; }
+    void reset() {
+        cursor = 0;
+    }
 
-    size_t write(uint8_t c) override {
-        if (cursor < buffer_size) {
+    usize write(u8 c) override {
+        if (cursor < buffer.size()) {
             buffer[cursor] = static_cast<char>(c);
             cursor += 1;
             return 1;
         }
+
         return 0;
     }
 };

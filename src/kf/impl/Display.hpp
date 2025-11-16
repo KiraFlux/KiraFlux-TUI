@@ -2,6 +2,7 @@
 
 #include <kf/abc/Widget.hpp>
 
+
 namespace kf::tui {
 
 /// @brief Отображает значение
@@ -13,7 +14,9 @@ template<typename T> struct Display final : kf::tui::Widget {
     explicit Display(const T &val) :
         value{val} {}
 
-    void doRender(TextStream &stream) const override { stream.print(value); }
+    void doRender(BufferStream &stream) const override {
+        stream.print(value);
+    }
 };
 
 }// namespace kf::tui

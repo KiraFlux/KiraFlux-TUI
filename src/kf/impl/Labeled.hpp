@@ -25,7 +25,7 @@ template<typename W> struct Labeled final : kf::tui::Widget {
 
     bool onChange(int direction) override { return content.onChange(direction); }
 
-    void doRender(TextStream &stream) const override {
+    void doRender(BufferStream &stream) const override {
         stream.print(label);
         stream.write(' ');
         stream.write(':');

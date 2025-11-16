@@ -2,10 +2,10 @@
 
 #include <queue>
 
-#include "TextStream.hpp"
 #include <kf/core/Event.hpp>
 #include <kf/core/Page.hpp>
-#include <kf/core/TextStream.hpp>
+#include <kf/core/BufferStream.hpp>
+
 
 namespace kf::tui {
 
@@ -13,7 +13,7 @@ struct PageManager final {
 
 private:
     std::queue<Event> events{};
-    TextStream stream{};
+    BufferStream stream{};
     Page *active_page{nullptr};
     Page *previous_page{nullptr};
 
@@ -38,11 +38,12 @@ public:
         std::swap(previous_page, active_page);
     }
 
-    TextStream::Slice render() {
-        static constexpr char null_page_content[] = "null page";
-        static constexpr TextStream::Slice null_page_slice{null_page_content, sizeof(null_page_content)};
+    slice<const char> render() {
+        static const slice<const char> null_page_slice{"null page", sizeof("null page")};
 
-        if (active_page == nullptr) { return null_page_slice; }
+        if (nullptr == active_page) {
+            return null_page_slice;
+        }
 
         stream.reset();
         active_page->render(stream, rows);
@@ -55,9 +56,7 @@ public:
     }
 
     bool pollEvents() {
-        if (active_page == nullptr) { return false; }
-
-        if (events.empty()) { return false; }
+        if (nullptr == active_page or events.empty()) { return false; }
 
         const bool render_required = active_page->onEvent(events.front());
         events.pop();

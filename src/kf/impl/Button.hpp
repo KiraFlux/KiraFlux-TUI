@@ -28,7 +28,7 @@ public:
         return false;
     }
 
-    void doRender(TextStream &stream) const override {
+    void doRender(BufferStream &stream) const override {
         stream.write('[');
         stream.print(label);
         stream.write(']');

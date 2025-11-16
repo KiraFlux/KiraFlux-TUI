@@ -1,6 +1,6 @@
 {
   "name": "KiraFlux-TUI",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Text User Interface for embedded C++",
   "keywords": [
     "ui",
@@ -30,5 +30,8 @@
   "platforms": "espressif32",
   "export": {
     "include": "src/kf"
+  },
+  "dependencies": {
+    "KiraFlux-ToolBox": "https://github.com/KiraFlux/KiraFlux-ToolBox.git"
   }
 }

@@ -28,12 +28,12 @@ public:
         return true;
     }
 
-    bool onChange(int direction) {
+    bool onChange(int direction) override {
         setState(direction > 0);
         return true;
     }
 
-    void doRender(TextStream &stream) const override {
+    void doRender(BufferStream &stream) const override {
         stream.print(getLabel());
     }
 

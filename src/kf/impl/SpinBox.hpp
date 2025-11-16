@@ -45,7 +45,7 @@ public:
         mode{mode}, value{value}, step{step} {}
 
     bool onClick() override {
-        is_step_setting_mode ^= 1;
+        is_step_setting_mode = not is_step_setting_mode;
         return true;
     }
 
@@ -58,7 +58,7 @@ public:
         return true;
     }
 
-    void doRender(TextStream &stream) const override {
+    void doRender(BufferStream &stream) const override {
         if (is_step_setting_mode) {
             stream.write('s');
         }

@@ -4,9 +4,10 @@
 
 #include "kf/abc/Widget.hpp"
 
+
 namespace kf::tui {
 
-/// @brief Комбо-бокс - выбор из списка значений
+/// @brief ComboBox - выбор из списка значений
 /// @tparam T Тип выбираемых значений
 /// @tparam N Кол-во выбираемых значений
 template<typename T, size_t N> struct ComboBox final : kf::tui::Widget {
@@ -15,7 +16,7 @@ template<typename T, size_t N> struct ComboBox final : kf::tui::Widget {
 public:
     /// @brief Элемент выбора
     struct Item {
-        /// @brief Наименование элемениа
+        /// @brief Наименование элемента
         const char *key;
 
         /// @brief Значение
@@ -45,7 +46,7 @@ public:
         return true;
     }
 
-    void doRender(TextStream &stream) const override {
+    void doRender(BufferStream &stream) const override {
         stream.write('<');
         stream.print(items[cursor].key);
         stream.write('>');

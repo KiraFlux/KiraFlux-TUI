@@ -4,7 +4,7 @@
 
 ---
 
-#### **TextStream**
+#### **BufferStream**
 
 Буферизированный поток для вывода текста, наследуемый от Arduino `Print`.
 
@@ -39,12 +39,12 @@ virtual bool onEvent(Event event) = 0;
 Обрабатывает событие элемента. Возвращает `true`, если требуется перерисовка.
 
 ```cpp
-virtual void doRender(TextStream &stream) const = 0;
+virtual void doRender(BufferStream &stream) const = 0;
 ```
 Рендерит содержимое элемента в поток вывода.
 
 ```cpp
-void render(TextStream &stream, bool selected) const;
+void render(BufferStream &stream, bool selected) const;
 ```
 Рендерит элемент с учетом состояния выбора (инверсия цвета для выбранного элемента).
 
@@ -67,7 +67,7 @@ bool onEvent(Event event) override;
 Обрабатывает события кнопки (реагирует на `Event::Click`).
 
 ```cpp
-void doRender(TextStream &stream) const override;
+void doRender(BufferStream &stream) const override;
 ```
 Рендерит кнопку в формате `[Метка]`.
 
@@ -90,7 +90,7 @@ bool onEvent(Event event) override;
 Не обрабатывает события (всегда возвращает `false`).
 
 ```cpp
-void doRender(TextStream &stream) const override;
+void doRender(BufferStream &stream) const override;
 ```
 Выводит значение в поток.
 
@@ -118,7 +118,7 @@ bool onEvent(Event event) override;
 Обрабатывает события изменения значения (`ChangeIncrement`/`ChangeDecrement`).
 
 ```cpp
-void doRender(TextStream &stream) const override;
+void doRender(BufferStream &stream) const override;
 ```
 Рендерит значение в формате `<Значение>`.
 
@@ -141,7 +141,7 @@ bool onEvent(Event event) override;
 Передает события содержимому виджета.
 
 ```cpp
-void doRender(TextStream &stream) const override;
+void doRender(BufferStream &stream) const override;
 ```
 Рендерит метку и содержимое в формате `Метка: Содержимое`.
 
@@ -169,7 +169,7 @@ void link(Page &other);
 Создает двустороннюю связь между страницами.
 
 ```cpp
-void render(TextStream &stream, int rows);
+void render(BufferStream &stream, int rows);
 ```
 Рендерит страницу с учетом количества доступных строк.
 
@@ -201,7 +201,7 @@ void back();
 Возвращает к предыдущей странице.
 
 ```cpp
-TextStream::Slice render();
+BufferStream::Slice render();
 ```
 Рендерит активную страницу.
 
@@ -234,7 +234,7 @@ bool onEvent(Event event) override;
 Обрабатывает клик для перехода на целевую страницу.
 
 ```cpp
-void doRender(TextStream &stream) const override;
+void doRender(BufferStream &stream) const override;
 ```
 Рендерит кнопку в формате `> НазваниеСтраницы`.
 

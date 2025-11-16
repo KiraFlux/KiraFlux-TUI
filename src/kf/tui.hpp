@@ -7,7 +7,7 @@ namespace kf::tui {}// namespace kf::tui
 #include <kf/core/Event.hpp>
 #include <kf/core/Page.hpp>
 #include <kf/core/PageManager.hpp>
-#include <kf/core/TextStream.hpp>
+#include <kf/core/BufferStream.hpp>
 
 // Basic Widget
 #include <kf/abc/Widget.hpp>
