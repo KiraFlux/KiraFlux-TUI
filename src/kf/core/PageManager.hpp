@@ -2,10 +2,9 @@
 
 #include <queue>
 
+#include <kf/core/BufferStream.hpp>
 #include <kf/core/Event.hpp>
 #include <kf/core/Page.hpp>
-#include <kf/core/BufferStream.hpp>
-
 
 namespace kf::tui {
 
