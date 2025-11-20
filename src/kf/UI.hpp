@@ -43,6 +43,53 @@ struct UI final : tools::Singleton<UI> {
             cursor = 0;
         }
 
+        // Значения
+
+        void string(const char *str) {
+            (void) print(str);
+        }
+
+        void number(i32 integer) {
+            (void) print(integer);
+        }
+
+        void number(f64 real, u8 rounding) {
+            (void) print(real, rounding);
+        }
+
+        // Оформление
+
+        void arrow() {
+            (void) write('-');
+            (void) write('>');
+            (void) write(' ');
+        }
+
+        void colon() {
+            (void) write(':');
+            (void) write(' ');
+        }
+
+        void contrastBegin() { (void) write(0x81); }
+
+        void contrastEnd() { (void) write(0x80); }
+
+        void blockBegin() { (void) write('['); }
+
+        void blockEnd() { (void) write(']'); }
+
+        void variableBegin() { (void) write('<'); }
+
+        void variableEnd() { (void) write('>'); }
+
+        // Управление
+
+        void widgetEnd() {
+            (void) write('\n');
+        }
+
+    private:
+
         [[nodiscard]] usize print(const char *str) {
             if (nullptr == str) {
                 str = "nullptr";
@@ -58,23 +105,23 @@ struct UI final : tools::Singleton<UI> {
             return written;
         }
 
-        [[nodiscard]] usize print(i32 number) {
+        [[nodiscard]] usize print(i32 integer) {
             usize written{0};
 
-            if (number < 0) {
-                number = -number;
+            if (integer < 0) {
+                integer = -integer;
                 written += write('-');
             }
 
             char digits_buffer[12];
 
             auto digits_total{0};
-            while (number > 0) {
+            while (integer > 0) {
                 const auto base = 10;
 
-                digits_buffer[digits_total] = static_cast<char>(number % base + '0');
+                digits_buffer[digits_total] = static_cast<char>(integer % base + '0');
                 digits_total += 1;
-                number /= base;
+                integer /= base;
             }
 
             for (auto i = 0; i < digits_total; i += 1) {
@@ -84,28 +131,28 @@ struct UI final : tools::Singleton<UI> {
             return written;
         }
 
-        [[nodiscard]] usize print(f64 real_number, u8 rounding) {
-            if (std::isnan(real_number)) {
+        [[nodiscard]] usize print(f64 real, u8 rounding) {
+            if (std::isnan(real)) {
                 return print("nan");
             }
 
-            if (std::isinf(real_number)) {
+            if (std::isinf(real)) {
                 return print("inf");
             }
 
             usize written{0};
 
-            if (real_number < 0) {
-                real_number = -real_number;
+            if (real < 0) {
+                real = -real;
                 written += write('-');
             }
 
-            written += print(i32(real_number));
+            written += print(i32(real));
 
             if (rounding > 0) {
                 written += write('.');
 
-                auto fractional = real_number - i32(real_number);
+                auto fractional = real - i32(real);
 
                 for (auto i = 0; i < rounding; i += 1) {
                     const auto base = 10;
@@ -199,9 +246,9 @@ struct UI final : tools::Singleton<UI> {
         /// @param focused Виджет в фокусе курсора
         void render(Render &render, bool focused) const {
             if (focused) {
-                render.write(0x81);
+                render.contrastBegin();
                 doRender(render);
-                render.write(0x80);
+                render.contrastEnd();
             } else {
                 doRender(render);
             }
@@ -388,9 +435,9 @@ public:
     protected:
 
         void doRender(Render &render) const override {
-            render.write('[');
-            render.print(label);
-            render.write(']');
+            render.blockBegin();
+            render.string(label);
+            render.blockEnd();
         }
     };
 
@@ -432,7 +479,7 @@ public:
     protected:
 
         void doRender(Render &render) const override {
-            render.print(state ? "[ 1 ]==" : "--[ 0 ]");
+            render.string(state ? "[ 1 ]==" : "--[ 0 ]");
         }
 
     private:
@@ -500,9 +547,9 @@ public:
     protected:
 
         void doRender(Render &render) const override {
-            render.write('<');
-            render.print(items[cursor].key);
-            render.write('>');
+            render.variableBegin();
+            render.string(items[cursor].key);
+            render.variableEnd();
         }
 
     private:
@@ -575,9 +622,8 @@ public:
     protected:
 
         void doRender(Render &render) const override {
-            render.print(label);
-            render.write(' ');
-            render.write(':');
+            render.string(label);
+            render.colon();
             content.doRender(render);
         }
     };
@@ -645,18 +691,18 @@ public:
 
         void doRender(Render &render) const override {
             if (is_step_setting_mode) {
-                render.write('s');
+                render.arrow();
             }
 
-            render.write('<');
+            render.variableBegin();
 
             if (std::is_floating_point<T>::value) {
-                render.print(static_cast<float>(value), 4);
+                render.number(static_cast<float>(value), 4);
             } else {
-                render.print(value);
+                render.number(value);
             }
 
-            render.write('>');
+            render.variableEnd();
         }
 
     private:
