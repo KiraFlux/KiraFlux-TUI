@@ -19,6 +19,43 @@ namespace kf {
 struct UI final : tools::Singleton<UI> {
     friend struct Singleton<UI>;
 
+    /// @brief Система отрисовки
+    struct Render final : Print {
+
+    private:
+        std::array<u8, 128> buffer{};
+        usize cursor{0};
+
+    public:
+        u16 rows{8}, cols{21};
+
+        /// @brief Подготовить буфер
+        slice<const u8> data() {
+            buffer[cursor] = '\0';
+
+            return {
+                buffer.data(),
+                cursor,
+            };
+        }
+
+        /// @brief Сбросить буфер отрисовки
+        void reset() {
+            cursor = 0;
+        }
+
+        /// @brief Реализация Print::write
+        usize write(u8 c) override {
+            if (cursor >= buffer.size()) {
+                return 0;
+            }
+
+            buffer[cursor] = c;
+            cursor += 1;
+            return 1;
+        }
+    };
+
     /// @brief Событие
     enum class Event {
 
@@ -48,43 +85,6 @@ struct UI final : tools::Singleton<UI> {
 
         /// @brief Изменить элемент -
         ChangeDecrement,
-    };
-
-    /// @brief Бекенд для отрисовки
-    struct Render final : Print {
-
-    private:
-        std::array<char, 128> buffer{};
-        usize cursor{0};
-
-    public:
-        u16 rows{8}, cols{21};
-
-        /// @brief Подготовить буфер
-        slice<const char> data() {
-            buffer[cursor] = '\0';
-
-            return {
-                buffer.data(),
-                cursor,
-            };
-        }
-
-        /// @brief Сбросить буфер отрисовки
-        void reset() {
-            cursor = 0;
-        }
-
-        /// @brief Реализация Print::write
-        usize write(u8 c) override {
-            if (cursor >= buffer.size()) {
-                return 0;
-            }
-
-            buffer[cursor] = static_cast<char>(c);
-            cursor += 1;
-            return 1;
-        }
     };
 
     struct Page;
@@ -148,11 +148,8 @@ struct UI final : tools::Singleton<UI> {
 
         public:
 
-            explicit PageSetter(
-                Page &target
-            ) :
-                Widget{target},
-                target{target} {}
+            explicit PageSetter(Page &target) :
+                Widget{target}, target{target} {}
 
             /// @brief Устанавливает активную страницу
             bool onClick() override;
@@ -169,14 +166,14 @@ struct UI final : tools::Singleton<UI> {
         const char *title;
 
         /// @brief Курсор (Индекс активного виджета)
-        int cursor{0};
+        usize cursor{0};
 
         /// @brief Виджет перехода к данной странице
         PageSetter to_this{*this};
 
     public:
 
-        explicit Page(const char *title) noexcept:
+        explicit Page(const char *title) :
             title{title} {}
 
         /// @brief Добавить виджет в данную страницу
@@ -202,16 +199,19 @@ struct UI final : tools::Singleton<UI> {
         /// @returns false - перерисовка не требуется
         bool onEvent(Event event);
 
+        /// @brief Общее кол-во виджетов
+        [[nodiscard]] inline usize totalWidgets() const { return static_cast<int>(widgets.size()); }
+
     private:
-        void moveCursor(int delta) {
+
+        /// @brief Максимальная позиция курсора
+        [[nodiscard]] inline usize cursorPositionMax() const { return totalWidgets() - 1; }
+
+        void moveCursor(isize delta) {
             cursor += delta;
-            cursor = std::max(cursor, 0);
+            cursor = std::max(static_cast<isize>(cursor), 0);
             cursor = std::min(cursor, cursorPositionMax());
         }
-
-        [[nodiscard]] inline int totalWidgets() const { return static_cast<int>(widgets.size()); }
-
-        [[nodiscard]] inline int cursorPositionMax() const { return totalWidgets() - 1; }
     };
 
 private:
@@ -242,9 +242,9 @@ public:
     }
 
     /// @brief Рендеринг активной страницы
-    slice<const char> render() {
+    slice<const u8> render() {
         if (nullptr == active_page) {
-            constexpr char s[] = "null page";
+            constexpr u8 s[] = "null page";
             return {s, sizeof(s)};;
         }
 
@@ -467,6 +467,7 @@ public:
     /// @brief Добавляет метку к виджету
     /// @tparam W Тип реализации виджета, к которому будет добавлена метка
     template<typename W> struct Labeled final : Widget {
+        // todo Adapter
         static_assert(std::is_base_of<Widget, W>::value, "W must be a Widget Subclass");
 
         /// @brief Реализация виджета, к которому была добавлена метка

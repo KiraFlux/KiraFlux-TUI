@@ -1,10 +1,14 @@
 #include "kf/UI.hpp"
 
 
+// kf::UI::Widget
+
 kf::UI::Widget::Widget(UI::Page &root) {
     root.addWidget(*this);
 }
 
+
+// kf::UI::Page
 
 void kf::UI::Page::render(kf::UI::Render &render) {
     render.print(title);
@@ -49,6 +53,9 @@ bool kf::UI::Page::onEvent(kf::UI::Event event) {
     }
     return false;
 }
+
+
+// kf::UI::Page::PageSetter
 
 void kf::UI::Page::PageSetter::doRender(Render &render) const {
     render.write('>');
