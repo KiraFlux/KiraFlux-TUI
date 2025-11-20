@@ -51,6 +51,8 @@ public:
         return true;
     }
 
+protected:
+
     void doRender(Render &render) const override {
         render.write('<');
         render.print(items[cursor].key);
@@ -58,6 +60,7 @@ public:
     }
 
 private:
+
     /// @brief Сместить курсор
     /// @param d смещение
     void moveCursor(int d) {
@@ -67,4 +70,4 @@ private:
     }
 };
 
-}// namespace kf::tui
+}

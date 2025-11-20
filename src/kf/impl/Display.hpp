@@ -14,9 +14,11 @@ template<typename T> struct Display final : Widget {
     explicit Display(const T &val) :
         value{val} {}
 
+protected:
+
     void doRender(Render &render) const override {
         render.print(value);
     }
 };
 
-}// namespace kf::tui
+}

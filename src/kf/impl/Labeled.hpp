@@ -28,6 +28,8 @@ template<typename W> struct Labeled final : Widget {
 
     bool onChange(int direction) override { return content.onChange(direction); }
 
+protected:
+
     void doRender(Render &render) const override {
         render.print(label);
         render.write(' ');
@@ -36,4 +38,4 @@ template<typename W> struct Labeled final : Widget {
     }
 };
 
-}// namespace kf::tui
+}

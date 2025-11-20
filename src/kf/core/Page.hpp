@@ -23,8 +23,10 @@ struct PageSetterButton final : Widget {
     explicit PageSetterButton(Page &target) :
         target{target} {}
 
-    /// @brief Реализация Widget::onClick - устанавливает активную страницу
+    /// @brief Устанавливает активную страницу
     bool onClick() override;
+
+protected:
 
     void doRender(Render &render) const override;
 };

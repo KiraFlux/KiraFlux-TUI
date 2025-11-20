@@ -62,6 +62,8 @@ public:
         return true;
     }
 
+protected:
+
     void doRender(Render &render) const override {
         if (is_step_setting_mode) {
             render.write('s');
@@ -106,4 +108,4 @@ private:
     }
 };
 
-}// namespace kf::tui
+}
