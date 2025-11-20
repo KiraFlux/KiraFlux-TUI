@@ -1,6 +1,6 @@
 #pragma once
 
-namespace kf::tui {
+namespace kf::ui {
 
 enum class Event {
 

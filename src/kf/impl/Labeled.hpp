@@ -2,11 +2,11 @@
 
 #include <kf/abc/Widget.hpp>
 
-namespace kf::tui {
+namespace kf::ui {
 
 /// @brief Добавляет метку к виджету
 /// @tparam W Тип реализации виджета, к которому будет добавлена метка
-template<typename W> struct Labeled final : kf::tui::Widget {
+template<typename W> struct Labeled final : kf::ui::Widget {
     static_assert(std::is_base_of<Widget, W>::value, "W must be a Widget Subclass");
 
     /// @brief Реализация виджета, к которому была добавлена метка

@@ -3,10 +3,10 @@
 #include <kf/abc/Widget.hpp>
 #include <type_traits>
 
-namespace kf::tui {
+namespace kf::ui {
 
 /// @brief Спин-бокс - Виджет для изменения арифметического значения в указанном режиме
-template<typename T> struct SpinBox final : kf::tui::Widget {
+template<typename T> struct SpinBox final : kf::ui::Widget {
     static_assert(std::is_arithmetic<T>::value, "T must be arithmetic");
 
     /// @brief Тип скалярной величины виджета

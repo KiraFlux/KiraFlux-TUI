@@ -4,10 +4,10 @@
 
 #include "kf/abc/Widget.hpp"
 
-namespace kf::tui {
+namespace kf::ui {
 
 /// @brief Чек-Бокс - Ввод булевого значения
-struct CheckBox final : kf::tui::Widget {
+struct CheckBox final : kf::ui::Widget {
 
     /// @brief Тип внешнего обработчика изменения
     using Handler = std::function<void(bool)>;

@@ -3,10 +3,10 @@
 #include <kf/abc/Widget.hpp>
 
 
-namespace kf::tui {
+namespace kf::ui {
 
 /// @brief Отображает значение
-template<typename T> struct Display final : kf::tui::Widget {
+template<typename T> struct Display final : kf::ui::Widget {
 
     /// @brief Отображаемое значение
     const T &value;

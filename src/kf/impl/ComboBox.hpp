@@ -5,12 +5,12 @@
 #include "kf/abc/Widget.hpp"
 
 
-namespace kf::tui {
+namespace kf::ui {
 
 /// @brief ComboBox - выбор из списка значений
 /// @tparam T Тип выбираемых значений
 /// @tparam N Кол-во выбираемых значений
-template<typename T, size_t N> struct ComboBox final : kf::tui::Widget {
+template<typename T, size_t N> struct ComboBox final : kf::ui::Widget {
     static_assert(N >= 1, "N >= 1");
 
 public:

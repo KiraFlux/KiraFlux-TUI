@@ -4,7 +4,7 @@
 #include <array>
 #include <kf/aliases.hpp>
 
-namespace kf::tui {
+namespace kf::ui {
 
 /// @brief Бекенд для отрисовки
 struct BufferStream final : Print {

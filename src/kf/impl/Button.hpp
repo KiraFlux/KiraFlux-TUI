@@ -4,10 +4,10 @@
 
 #include <kf/abc/Widget.hpp>
 
-namespace kf::tui {
+namespace kf::ui {
 
 /// @brief Кнопка - Виджет, реагирующий на клик
-struct Button final : kf::tui::Widget {
+struct Button final : kf::ui::Widget {
 
     /// @brief Обработчик клика
     using Handler = std::function<void()>;

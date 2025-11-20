@@ -6,7 +6,7 @@
 #include <kf/core/Event.hpp>
 #include <kf/core/Page.hpp>
 
-namespace kf::tui {
+namespace kf::ui {
 
 struct PageManager final {
 

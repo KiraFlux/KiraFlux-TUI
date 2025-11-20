@@ -4,7 +4,7 @@
 #include <kf/core/BufferStream.hpp>
 
 
-namespace kf::tui {
+namespace kf::ui {
 
 /// @brief Виджет
 struct Widget {

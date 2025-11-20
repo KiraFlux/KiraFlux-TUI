@@ -8,13 +8,13 @@
 #include <kf/core/BufferStream.hpp>
 #include <kf/core/Event.hpp>
 
-namespace kf::tui {
+namespace kf::ui {
 
 /// @brief Страница, содержит виджеты. Имеет заголовок.
 struct Page;
 
 /// @brief Специальный виджет для создания кнопки перехода на страницу
-struct PageSetterButton final : tui::Widget {
+struct PageSetterButton final : ui::Widget {
 
     /// @brief Страница перехода
     Page &target;
