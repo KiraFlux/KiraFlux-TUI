@@ -1,12 +1,16 @@
-#include "kf/ui/core/Page.hpp"
-#include "kf/ui/core/PageManager.hpp"
+#include "kf/UI.hpp"
 
 
-void kf::ui::Page::render(kf::ui::Render &render, int rows) {
+kf::UI::Widget::Widget(UI::Page &root) {
+    root.addWidget(*this);
+}
+
+
+void kf::UI::Page::render(kf::UI::Render &render) {
     render.print(title);
     render.write('\n');
 
-    rows -= 1;
+    const auto rows = render.rows - 1;
 
     const auto start = (totalWidgets() > rows) ? std::min(cursor, totalWidgets() - rows) : 0;
     const auto end = std::min(start + rows, totalWidgets());
@@ -17,7 +21,7 @@ void kf::ui::Page::render(kf::ui::Render &render, int rows) {
     }
 }
 
-bool kf::ui::Page::onEvent(kf::ui::Event event) {
+bool kf::UI::Page::onEvent(kf::UI::Event event) {
     switch (event) {
         case Event::None: {
             return false;
@@ -46,13 +50,13 @@ bool kf::ui::Page::onEvent(kf::ui::Event event) {
     return false;
 }
 
-void kf::ui::Page::PageSetter::doRender(Render &render) const {
+void kf::UI::Page::PageSetter::doRender(Render &render) const {
     render.write('>');
     render.write(' ');
     render.print(target.title);
 }
 
-bool kf::ui::Page::PageSetter::onClick() {
-    PageManager::instance().bind(target);
+bool kf::UI::Page::PageSetter::onClick() {
+    UI::instance().bind(target);
     return true;
 }
