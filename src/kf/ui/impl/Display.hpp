@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kf/abc/Widget.hpp>
+#include "kf/ui/abc/Widget.hpp"
 
 
 namespace kf::ui {
@@ -8,10 +8,18 @@ namespace kf::ui {
 /// @brief Отображает значение
 template<typename T> struct Display final : Widget {
 
+private:
+
     /// @brief Отображаемое значение
     const T &value;
 
-    explicit Display(const T &val) :
+public:
+
+    explicit Display(
+        Page &root,
+        const T &val
+    ) :
+        Widget{root},
         value{val} {}
 
 protected:

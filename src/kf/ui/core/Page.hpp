@@ -4,9 +4,9 @@
 #include <utility>
 #include <vector>
 
-#include <kf/abc/Widget.hpp>
-#include <kf/core/Render.hpp>
-#include <kf/core/Event.hpp>
+#include "kf/ui/abc/Widget.hpp"
+#include "kf/ui/core/Render.hpp"
+#include "kf/ui/core/Event.hpp"
 
 
 namespace kf::ui {
@@ -20,10 +20,17 @@ private:
     /// @note Не используется в пользовательском коде. Для связывания страниц используйте <code>kf::ui::Page::link</code>
     struct PageSetter final : Widget {
 
+    private:
+
         /// @brief Страница перехода
         Page &target;
 
-        explicit PageSetter(Page &target) :
+    public:
+
+        explicit PageSetter(
+            Page &target
+        ) :
+            Widget{target},
             target{target} {}
 
         /// @brief Устанавливает активную страницу

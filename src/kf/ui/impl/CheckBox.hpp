@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "kf/abc/Widget.hpp"
+#include "kf/ui/abc/Widget.hpp"
 
 
 namespace kf::ui {
@@ -22,8 +22,15 @@ private:
     bool state;
 
 public:
-    explicit CheckBox(ChangeHandler change_handler, bool default_state = false) :
-        on_change{std::move(change_handler)}, state{default_state} {}
+
+    explicit CheckBox(
+        Page &root,
+        ChangeHandler change_handler,
+        bool default_state = false
+    ) :
+        Widget{root},
+        on_change{std::move(change_handler)},
+        state{default_state} {}
 
     bool onClick() override {
         setState(not state);
@@ -45,7 +52,10 @@ private:
 
     void setState(bool new_state) {
         state = new_state;
-        if (on_change) { on_change(state); }
+
+        if (on_change) {
+            on_change(state);
+        }
     }
 };
 

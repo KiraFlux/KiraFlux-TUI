@@ -2,16 +2,17 @@
 
 #include <queue>
 
-#include <kf/core/Render.hpp>
-#include <kf/core/Event.hpp>
-#include <kf/core/Page.hpp>
+#include "kf/ui/core/Render.hpp"
+#include "kf/ui/core/Event.hpp"
+#include "kf/ui/core/Page.hpp"
 
-
+// todo унаследовать от Singleton
 namespace kf::ui {
 
 struct PageManager final {
 
 private:
+
     std::queue<Event> events{};
     Render render_system{};
     Page *active_page{nullptr};
@@ -20,6 +21,7 @@ private:
     explicit PageManager() = default;
 
 public:
+
     PageManager(const PageManager &) = delete;
 
     static PageManager &instance() {

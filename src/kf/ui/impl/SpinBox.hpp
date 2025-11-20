@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-#include <kf/abc/Widget.hpp>
+#include "kf/ui/abc/Widget.hpp"
 
 
 namespace kf::ui {
@@ -42,11 +42,15 @@ private:
 
 public:
     explicit SpinBox(
+        Page &root,
         T &value,
         T step = static_cast<T>(1),
         Mode mode = Mode::Arithmetic
     ) :
-        mode{mode}, value{value}, step{step} {}
+        Widget{root},
+        mode{mode},
+        value{value},
+        step{step} {}
 
     bool onClick() override {
         is_step_setting_mode = not is_step_setting_mode;

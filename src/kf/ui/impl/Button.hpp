@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include <kf/abc/Widget.hpp>
+#include "kf/ui/abc/Widget.hpp"
 
 
 namespace kf::ui {
@@ -23,15 +23,25 @@ private:
 
 public:
 
-    explicit Button(const char *label, ClickHandler on_click) noexcept:
-        label{label}, on_click{std::move(on_click)} {}
+    explicit Button(
+        Page &root,
+        const char *label,
+        ClickHandler on_click
+    ) :
+        Widget{root},
+        label{label},
+        on_click{std::move(on_click)} {}
 
     bool onClick() override {
-        if (on_click) { on_click(); }
+        if (on_click) {
+            on_click();
+        }
+
         return false;
     }
 
 protected:
+
     void doRender(Render &render) const override {
         render.write('[');
         render.print(label);

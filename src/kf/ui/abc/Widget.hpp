@@ -1,13 +1,22 @@
 #pragma once
 
-#include <kf/core/Event.hpp>
-#include <kf/core/Render.hpp>
+#include "kf/ui/core/Event.hpp"
+#include "kf/ui/core/Render.hpp"
 
 
 namespace kf::ui {
 
+struct Page;
+
 /// @brief Виджет
 struct Widget {
+
+public:
+
+    /// @brief Конструктор виджета
+    /// @param root Страница, которая будет содержать данный виджет
+    /// @details Вызывает <code>Page::addWidget</code>
+    explicit Widget(Page &root);
 
 protected:
 

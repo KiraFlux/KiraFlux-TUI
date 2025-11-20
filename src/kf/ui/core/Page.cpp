@@ -1,5 +1,5 @@
-#include <kf/core/Page.hpp>
-#include <kf/core/PageManager.hpp>
+#include "kf/ui/core/Page.hpp"
+#include "kf/ui/core/PageManager.hpp"
 
 
 void kf::ui::Page::render(kf::ui::Render &render, int rows) {

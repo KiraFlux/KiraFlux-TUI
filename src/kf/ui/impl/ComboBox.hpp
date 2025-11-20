@@ -3,7 +3,7 @@
 #include <array>
 #include <kf/aliases.hpp>
 
-#include <kf/abc/Widget.hpp>
+#include "kf/ui/abc/Widget.hpp"
 
 
 namespace kf::ui {
@@ -42,12 +42,20 @@ private:
 
 public:
 
-    explicit ComboBox(Container items, T &val) :
-        items{std::move(items)}, value{val} {}
+    explicit ComboBox(
+        Page &root,
+        Container items,
+        T &val
+    ) :
+        Widget{root},
+        items{std::move(items)},
+        value{val} {}
 
     bool onChange(int direction) override {
-        moveCursor(+direction);
+        moveCursor(direction);
+
         value = items[cursor].value;
+
         return true;
     }
 
@@ -62,9 +70,9 @@ protected:
 private:
 
     /// @brief Сместить курсор
-    /// @param d смещение
-    void moveCursor(int d) {
-        cursor += d;
+    /// @param delta смещение
+    void moveCursor(int delta) {
+        cursor += delta;
         cursor += N;
         cursor %= N;
     }

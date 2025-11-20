@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-#include <kf/abc/Widget.hpp>
+#include "kf/ui/abc/Widget.hpp"
 
 
 namespace kf::ui {
@@ -15,14 +15,24 @@ template<typename W> struct Labeled final : Widget {
     /// @brief Реализация виджета, к которому была добавлена метка
     using Content = W;
 
+private:
+
     /// @brief Метка
     const char *label;
 
     /// @brief Виджет
     W content;
 
-    explicit Labeled(const char *label, W content) noexcept:
-        label{label}, content{std::move(content)} {}
+public:
+
+    explicit Labeled(
+        Page &root,
+        const char *label,
+        W content
+    ) :
+        Widget{root},
+        label{label},
+        content{std::move(content)} {}
 
     bool onClick() override { return content.onClick(); }
 
