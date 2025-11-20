@@ -590,11 +590,10 @@ public:
     /// @brief Добавляет метку к виджету
     /// @tparam W Тип реализации виджета, к которому будет добавлена метка
     template<typename W> struct Labeled final : Widget {
-        // todo Adapter
         static_assert(std::is_base_of<Widget, W>::value, "W must be a Widget Subclass");
 
         /// @brief Реализация виджета, к которому была добавлена метка
-        using Content = W;
+        using Impl = W;
 
     private:
 
@@ -602,29 +601,29 @@ public:
         const char *label;
 
         /// @brief Виджет
-        W content;
+        W impl;
 
     public:
 
         explicit Labeled(
             Page &root,
             const char *label,
-            W content
+            W impl
         ) :
             Widget{root},
             label{label},
-            content{std::move(content)} {}
+            impl{std::move(impl)} {}
 
-        bool onClick() override { return content.onClick(); }
+        bool onClick() override { return impl.onClick(); }
 
-        bool onChange(int direction) override { return content.onChange(direction); }
+        bool onChange(int direction) override { return impl.onChange(direction); }
 
     protected:
 
         void doRender(Render &render) const override {
             render.string(label);
             render.colon();
-            content.doRender(render);
+            impl.doRender(render);
         }
     };
 
