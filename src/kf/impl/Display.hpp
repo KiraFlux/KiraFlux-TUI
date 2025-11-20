@@ -6,7 +6,7 @@
 namespace kf::ui {
 
 /// @brief Отображает значение
-template<typename T> struct Display final : kf::ui::Widget {
+template<typename T> struct Display final : Widget {
 
     /// @brief Отображаемое значение
     const T &value;
@@ -14,8 +14,8 @@ template<typename T> struct Display final : kf::ui::Widget {
     explicit Display(const T &val) :
         value{val} {}
 
-    void doRender(BufferStream &stream) const override {
-        stream.print(value);
+    void doRender(Render &render) const override {
+        render.print(value);
     }
 };
 

@@ -2,10 +2,10 @@
 #include <kf/core/PageManager.hpp>
 
 
-void kf::ui::PageSetterButton::doRender(BufferStream &stream) const {
-    stream.write('>');
-    stream.write(' ');
-    stream.print(target.title);
+void kf::ui::PageSetterButton::doRender(Render &render) const {
+    render.write('>');
+    render.write(' ');
+    render.print(target.title);
 }
 
 bool kf::ui::PageSetterButton::onClick() {

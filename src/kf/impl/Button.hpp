@@ -4,10 +4,11 @@
 
 #include <kf/abc/Widget.hpp>
 
+
 namespace kf::ui {
 
 /// @brief Кнопка - Виджет, реагирующий на клик
-struct Button final : kf::ui::Widget {
+struct Button final : Widget {
 
     /// @brief Обработчик клика
     using Handler = std::function<void()>;
@@ -20,7 +21,7 @@ private:
     Handler on_click;
 
 public:
-    explicit Button(const char *label, Handler on_click) noexcept :
+    explicit Button(const char *label, Handler on_click) noexcept:
         label{label}, on_click{std::move(on_click)} {}
 
     bool onClick() override {
@@ -28,11 +29,11 @@ public:
         return false;
     }
 
-    void doRender(BufferStream &stream) const override {
-        stream.write('[');
-        stream.print(label);
-        stream.write(']');
+    void doRender(Render &render) const override {
+        render.write('[');
+        render.print(label);
+        render.write(']');
     }
 };
 
-}// namespace kf::tui
+}

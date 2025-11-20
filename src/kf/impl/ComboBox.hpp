@@ -1,8 +1,9 @@
 #pragma once
 
 #include <array>
+#include <kf/aliases.hpp>
 
-#include "kf/abc/Widget.hpp"
+#include <kf/abc/Widget.hpp>
 
 
 namespace kf::ui {
@@ -10,12 +11,14 @@ namespace kf::ui {
 /// @brief ComboBox - выбор из списка значений
 /// @tparam T Тип выбираемых значений
 /// @tparam N Кол-во выбираемых значений
-template<typename T, size_t N> struct ComboBox final : kf::ui::Widget {
+template<typename T, usize N> struct ComboBox final : Widget {
     static_assert(N >= 1, "N >= 1");
 
 public:
+
     /// @brief Элемент выбора
     struct Item {
+
         /// @brief Наименование элемента
         const char *key;
 
@@ -27,6 +30,7 @@ public:
     using Container = std::array<Item, N>;
 
 private:
+
     /// @brief Элементы выбора
     const Container items;
 
@@ -37,6 +41,7 @@ private:
     int cursor{0};
 
 public:
+
     explicit ComboBox(Container items, T &val) :
         items{std::move(items)}, value{val} {}
 
@@ -46,10 +51,10 @@ public:
         return true;
     }
 
-    void doRender(BufferStream &stream) const override {
-        stream.write('<');
-        stream.print(items[cursor].key);
-        stream.write('>');
+    void doRender(Render &render) const override {
+        render.write('<');
+        render.print(items[cursor].key);
+        render.write('>');
     }
 
 private:

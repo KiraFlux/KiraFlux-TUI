@@ -1,7 +1,7 @@
 #pragma once
 
 #include <kf/core/Event.hpp>
-#include <kf/core/BufferStream.hpp>
+#include <kf/core/Render.hpp>
 
 
 namespace kf::ui {
@@ -10,8 +10,8 @@ namespace kf::ui {
 struct Widget {
 
     /// @brief Отрисовать виджет
-    /// @param stream Поток вывода символов
-    virtual void doRender(BufferStream &stream) const = 0;
+    /// @param render Способ отрисовки
+    virtual void doRender(Render &render) const = 0;
 
     /// @brief Действие при событии клика
     /// @return true - Нужна перерисовка
@@ -23,17 +23,17 @@ struct Widget {
     virtual bool onChange(int direction) { return false; }
 
     /// @brief Внешняя отрисовка виджета
-    /// @param stream Поток вывода
+    /// @param render Способ отрисовки
     /// @param selected виджет был выбран
-    void render(BufferStream &stream, bool selected) const {
+    void render(Render &render, bool selected) const {
         if (selected) {
-            stream.write(0x81);
-            doRender(stream);
-            stream.write(0x80);
+            render.write(0x81);
+            doRender(render);
+            render.write(0x80);
         } else {
-            doRender(stream);
+            doRender(render);
         }
     }
 };
 
-}// namespace kf::tui
+}

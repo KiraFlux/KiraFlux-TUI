@@ -4,10 +4,11 @@
 
 #include "kf/abc/Widget.hpp"
 
+
 namespace kf::ui {
 
 /// @brief Чек-Бокс - Ввод булевого значения
-struct CheckBox final : kf::ui::Widget {
+struct CheckBox final : Widget {
 
     /// @brief Тип внешнего обработчика изменения
     using Handler = std::function<void(bool)>;
@@ -33,12 +34,11 @@ public:
         return true;
     }
 
-    void doRender(BufferStream &stream) const override {
-        stream.print(getLabel());
+    void doRender(Render &render) const override {
+        render.print(state ? "[ 1 ]==" : "--[ 0 ]");
     }
 
 private:
-    [[nodiscard]] inline const char *getLabel() const { return state ? "[ 1 ]==" : "--[ 0 ]"; }
 
     void setState(bool new_state) {
         state = new_state;

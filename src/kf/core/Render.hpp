@@ -1,13 +1,14 @@
 #pragma once
 
-#include <Print.h>
 #include <array>
+#include <Print.h>
 #include <kf/aliases.hpp>
+
 
 namespace kf::ui {
 
 /// @brief Бекенд для отрисовки
-struct BufferStream final : Print {
+struct Render final : Print {
 
 private:
     std::array<char, 128> buffer{};
@@ -15,7 +16,7 @@ private:
 
 public:
 
-    /// @brief Подготовить буффер
+    /// @brief Подготовить буфер
     slice<const char> prepareData() {
         buffer[cursor] = '\0';
 
@@ -25,7 +26,7 @@ public:
         };
     }
 
-    /// @brief Сбросить буфер отрисовку
+    /// @brief Сбросить буфер отрисовки
     void reset() {
         cursor = 0;
     }
@@ -42,4 +43,4 @@ public:
     }
 };
 
-}// namespace kf::tui
+}

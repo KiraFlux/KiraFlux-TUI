@@ -5,8 +5,9 @@
 #include <vector>
 
 #include <kf/abc/Widget.hpp>
-#include <kf/core/BufferStream.hpp>
+#include <kf/core/Render.hpp>
 #include <kf/core/Event.hpp>
+
 
 namespace kf::ui {
 
@@ -14,7 +15,7 @@ namespace kf::ui {
 struct Page;
 
 /// @brief Специальный виджет для создания кнопки перехода на страницу
-struct PageSetterButton final : ui::Widget {
+struct PageSetterButton final : Widget {
 
     /// @brief Страница перехода
     Page &target;
@@ -25,7 +26,7 @@ struct PageSetterButton final : ui::Widget {
     /// @brief Реализация Widget::onClick - устанавливает активную страницу
     bool onClick() override;
 
-    void doRender(BufferStream &stream) const override;
+    void doRender(Render &render) const override;
 };
 
 struct Page {
@@ -45,7 +46,7 @@ private:
     PageSetterButton to_this{*this};
 
 public:
-    explicit Page(const char *title) noexcept :
+    explicit Page(const char *title) noexcept:
         title{title} {}
 
     /// @brief Добавить виджет в данную страницу
@@ -61,11 +62,11 @@ public:
     }
 
     /// @brief Отобразить страницу
-    /// @param stream Система рендера
+    /// @param render Система отрисовки
     /// @param rows Кол-во строк
-    void render(BufferStream &stream, int rows) {
-        stream.print(title);
-        stream.write('\n');
+    void render(Render &render, int rows) {
+        render.print(title);
+        render.write('\n');
 
         rows -= 1;
 
@@ -73,8 +74,8 @@ public:
         const auto end = std::min(start + rows, totalWidgets());
 
         for (int i = start; i < end; i += 1) {
-            widgets[i]->render(stream, i == cursor);
-            stream.write('\n');
+            widgets[i]->render(render, i == cursor);
+            render.write('\n');
         }
     }
 
@@ -122,4 +123,5 @@ private:
 
     [[nodiscard]] inline int cursorPositionMax() const { return totalWidgets() - 1; }
 };
-}// namespace kf::tui
+
+}

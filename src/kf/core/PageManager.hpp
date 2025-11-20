@@ -2,9 +2,10 @@
 
 #include <queue>
 
-#include <kf/core/BufferStream.hpp>
+#include <kf/core/Render.hpp>
 #include <kf/core/Event.hpp>
 #include <kf/core/Page.hpp>
+
 
 namespace kf::ui {
 
@@ -12,7 +13,7 @@ struct PageManager final {
 
 private:
     std::queue<Event> events{};
-    BufferStream stream{};
+    Render render_system{};
     Page *active_page{nullptr};
     Page *previous_page{nullptr};
 
@@ -44,10 +45,10 @@ public:
             return null_page_slice;
         }
 
-        stream.reset();
-        active_page->render(stream, rows);
+        render_system.reset();
+        active_page->render(render_system, rows);
 
-        return stream.prepareData();
+        return render_system.prepareData();
     }
 
     void addEvent(Event event) {
@@ -55,7 +56,7 @@ public:
     }
 
     bool pollEvents() {
-        if (nullptr == active_page or events.empty()) { return false; }
+        if (events.empty() or nullptr == active_page) { return false; }
 
         const bool render_required = active_page->onEvent(events.front());
         events.pop();
@@ -63,4 +64,4 @@ public:
     }
 };
 
-}// namespace kf::tui
+}

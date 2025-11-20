@@ -1,12 +1,14 @@
 #pragma once
 
-#include <kf/abc/Widget.hpp>
 #include <type_traits>
+
+#include <kf/abc/Widget.hpp>
+
 
 namespace kf::ui {
 
 /// @brief Спин-бокс - Виджет для изменения арифметического значения в указанном режиме
-template<typename T> struct SpinBox final : kf::ui::Widget {
+template<typename T> struct SpinBox final : Widget {
     static_assert(std::is_arithmetic<T>::value, "T must be arithmetic");
 
     /// @brief Тип скалярной величины виджета
@@ -25,6 +27,7 @@ template<typename T> struct SpinBox final : kf::ui::Widget {
     };
 
 private:
+
     /// @brief
     bool is_step_setting_mode{false};
 
@@ -41,7 +44,8 @@ public:
     explicit SpinBox(
         T &value,
         T step = static_cast<T>(1),
-        Mode mode = Mode::Arithmetic) :
+        Mode mode = Mode::Arithmetic
+    ) :
         mode{mode}, value{value}, step{step} {}
 
     bool onClick() override {
@@ -58,20 +62,20 @@ public:
         return true;
     }
 
-    void doRender(BufferStream &stream) const override {
+    void doRender(Render &render) const override {
         if (is_step_setting_mode) {
-            stream.write('s');
+            render.write('s');
         }
 
-        stream.write('<');
+        render.write('<');
 
         if (std::is_floating_point<T>::value) {
-            stream.print(static_cast<float>(value), 4);
+            render.print(static_cast<float>(value), 4);
         } else {
-            stream.print(value);
+            render.print(value);
         }
 
-        stream.write('>');
+        render.write('>');
     }
 
 private:
