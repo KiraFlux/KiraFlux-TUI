@@ -2,12 +2,11 @@
 
 #include <type_traits>
 #include <utility>
+#include <cmath>
 #include <functional>
 #include <queue>
 #include <array>
 #include <vector>
-
-#include <Print.h>
 
 #include <kf/aliases.hpp>
 #include <kf/tools/meta/Singleton.hpp>
@@ -20,7 +19,7 @@ struct UI final : tools::Singleton<UI> {
     friend struct Singleton<UI>;
 
     /// @brief Система отрисовки
-    struct Render final : Print {
+    struct Render {
 
     private:
         std::array<u8, 128> buffer{};
@@ -44,8 +43,85 @@ struct UI final : tools::Singleton<UI> {
             cursor = 0;
         }
 
-        /// @brief Реализация Print::write
-        usize write(u8 c) override {
+        [[nodiscard]] usize print(const char *str) {
+            if (nullptr == str) {
+                str = "nullptr";
+            }
+
+            usize written{0};
+
+            while (*str) {
+                written += write(*str);
+                str += 1;
+            }
+
+            return written;
+        }
+
+        [[nodiscard]] usize print(i32 number) {
+            usize written{0};
+
+            if (number < 0) {
+                number = -number;
+                written += write('-');
+            }
+
+            char digits_buffer[12];
+
+            auto digits_total{0};
+            while (number > 0) {
+                const auto base = 10;
+
+                digits_buffer[digits_total] = static_cast<char>(number % base + '0');
+                digits_total += 1;
+                number /= base;
+            }
+
+            for (auto i = 0; i < digits_total; i += 1) {
+                written += write(digits_buffer[i]);
+            }
+
+            return written;
+        }
+
+        [[nodiscard]] usize print(f64 real_number, u8 rounding) {
+            if (std::isnan(real_number)) {
+                return print("nan");
+            }
+
+            if (std::isinf(real_number)) {
+                return print("inf");
+            }
+
+            usize written{0};
+
+            if (real_number < 0) {
+                real_number = -real_number;
+                written += write('-');
+            }
+
+            written += print(i32(real_number));
+
+            if (rounding > 0) {
+                written += write('.');
+
+                auto fractional = real_number - i32(real_number);
+
+                for (auto i = 0; i < rounding; i += 1) {
+                    const auto base = 10;
+
+                    fractional *= base;
+                    const auto digit = u8(fractional);
+                    written += write('0' + digit);
+                    fractional -= digit;
+                }
+            }
+
+            return written;
+        }
+
+        /// @brief Записать байт в буфер
+        [[nodiscard]] usize write(u8 c) {
             if (cursor >= buffer.size()) {
                 return 0;
             }
