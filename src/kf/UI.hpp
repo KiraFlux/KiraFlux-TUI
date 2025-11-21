@@ -217,18 +217,17 @@ struct UI final : tools::Singleton<UI> {
 
     public:
 
-        /// @brief Конструктор виджета
+        /// @brief Конструктор виджета с автоматическим добавлением на страницу
         /// @param root Страница, которая будет содержать данный виджет
         /// @details Вызывает <code>Page::addWidget</code>
         explicit Widget(Page &root);
 
-    protected:
+        /// @brief Конструктор виджета по умолчанию, не добавляет себя на страницу
+        explicit Widget() = default;
 
         /// @brief Отрисовать виджет
         /// @param render Способ отрисовки
         virtual void doRender(Render &render) const = 0;
-
-    public:
 
         /// @brief Действие при событии клика
         /// @returns true - Нужна перерисовка
@@ -276,8 +275,6 @@ struct UI final : tools::Singleton<UI> {
 
             /// @brief Устанавливает активную страницу
             bool onClick() override;
-
-        protected:
 
             void doRender(Render &render) const override;
         };
@@ -432,8 +429,6 @@ public:
             return false;
         }
 
-    protected:
-
         void doRender(Render &render) const override {
             render.blockBegin();
             render.string(label);
@@ -458,6 +453,13 @@ public:
     public:
 
         explicit CheckBox(
+            ChangeHandler change_handler,
+            bool default_state = false
+        ) :
+            on_change{std::move(change_handler)},
+            state{default_state} {}
+
+        explicit CheckBox(
             Page &root,
             ChangeHandler change_handler,
             bool default_state = false
@@ -475,8 +477,6 @@ public:
             setState(direction > 0);
             return true;
         }
-
-    protected:
 
         void doRender(Render &render) const override {
             render.string(state ? "[ 1 ]==" : "--[ 0 ]");
@@ -528,6 +528,13 @@ public:
     public:
 
         explicit ComboBox(
+            Container items,
+            T &val
+        ) :
+            items{std::move(items)},
+            value{val} {}
+
+        explicit ComboBox(
             Page &root,
             Container items,
             T &val
@@ -543,8 +550,6 @@ public:
 
             return true;
         }
-
-    protected:
 
         void doRender(Render &render) const override {
             render.variableBegin();
@@ -580,10 +585,17 @@ public:
             Widget{root},
             value{val} {}
 
-    protected:
+        explicit Display(
+            const T &val
+        ) :
+            value{val} {}
 
         void doRender(Render &render) const override {
-            render.print(value);
+            if constexpr (std::is_floating_point<T>::value) {
+                render.number(value, 2);
+            } else {
+                render.number(value);
+            }
         }
     };
 
@@ -617,8 +629,6 @@ public:
         bool onClick() override { return impl.onClick(); }
 
         bool onChange(int direction) override { return impl.onChange(direction); }
-
-    protected:
 
         void doRender(Render &render) const override {
             render.string(label);
@@ -662,6 +672,15 @@ public:
 
     public:
         explicit SpinBox(
+            T &value,
+            T step = static_cast<T>(1),
+            Mode mode = Mode::Arithmetic
+        ) :
+            mode{mode},
+            value{value},
+            step{step} {}
+
+        explicit SpinBox(
             Page &root,
             T &value,
             T step = static_cast<T>(1),
@@ -685,8 +704,6 @@ public:
             }
             return true;
         }
-
-    protected:
 
         void doRender(Render &render) const override {
             if (is_step_setting_mode) {
